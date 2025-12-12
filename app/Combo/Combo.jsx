@@ -29,7 +29,7 @@ export default function ComboSection() {
           desc:
             combo.includesNames?.length > 0
               ? `Includes: ${combo.includesNames.join(", ")}`
-              : "Combo Service",
+              : "",
         }));
 
         setCombos(formatted);

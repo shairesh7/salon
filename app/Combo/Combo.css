@@ -54,8 +54,13 @@
     0 0 20px rgba(255, 200, 100, 0.18);
 
   transition: 0.35s ease;
-  min-height: 520px; /* Bigger cards */
+  min-height: 520px;
+
+  /* ✅ NEW */
+  display: flex;
+  flex-direction: column;
 }
+
 
 .combo-card:hover {
   transform: translateY(-10px);
@@ -120,7 +125,7 @@
    BUTTON – GOLD NEON CTA
 ==================================== */
 .enroll-btn {
-  margin-top: 22px;
+  margin-top: auto; /* ✅ Push to bottom */
   width: 100%;
   padding: 16px;
   font-size: 17px;
@@ -138,6 +143,7 @@
 
   transition: 0.25s ease;
 }
+
 
 .enroll-btn:hover {
   transform: translateY(-3px);
