@@ -18,19 +18,34 @@ function Chip({ active, onClick, children }) {
     </button>
   );
 }
-
-// --------------------------------------------------
-// SERVICE CARD
-// --------------------------------------------------
 function ServiceCard({ data }) {
   const [selectedMain, setSelectedMain] = useState(null);
   const [selectedSub, setSelectedSub] = useState(null);
 
-  // Auto-select cheapest options
+  // Auto-select cheapest on initial load
   useEffect(() => {
     setSelectedMain(data.defaultMain || null);
     setSelectedSub(data.defaultSub || null);
   }, [data.defaultMain, data.defaultSub]);
+
+  // When MAIN option changes, auto-select cheapest SUB option
+  useEffect(() => {
+    if (!selectedMain) return;
+
+    const main = data.options.find((o) => o.label === selectedMain);
+    if (!main) return;
+
+    if (main.subOptions?.length > 0) {
+      // Find cheapest sub option
+      const cheapestSub = main.subOptions.reduce((min, current) =>
+        current.price < min.price ? current : min
+      );
+
+      setSelectedSub(cheapestSub.label);
+    } else {
+      setSelectedSub(null);
+    }
+  }, [selectedMain, data.options]);
 
   // Calculate total
   const total = useMemo(() => {
@@ -70,7 +85,7 @@ function ServiceCard({ data }) {
 
       <div className="ws-subhead">Select Service</div>
 
-      {/* Main Options */}
+      {/* MAIN OPTIONS */}
       <div className="ws-chips">
         {data.options.map((opt) => (
           <Chip
@@ -78,11 +93,11 @@ function ServiceCard({ data }) {
             active={selectedMain === opt.label}
             onClick={() => {
               if (selectedMain === opt.label) {
+                // remove selection on second click
                 setSelectedMain(null);
                 setSelectedSub(null);
               } else {
                 setSelectedMain(opt.label);
-                setSelectedSub(null);
               }
             }}
           >
@@ -91,7 +106,7 @@ function ServiceCard({ data }) {
         ))}
       </div>
 
-      {/* Sub Options */}
+      {/* SUB OPTIONS */}
       {selectedMain &&
         data.options.find((o) => o.label === selectedMain)?.subOptions
           ?.length > 0 && (

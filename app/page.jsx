@@ -1,23 +1,41 @@
+"use client";
+
+import { useState, useEffect } from "react";
+
 import Explore from "./Explore/page";
-import Hero from './Hero/Hero';
-import Header from './Header/Header';
-import Combo from './Combo/Combo';
-import Root from './Root/RootSection';
-import About from './About/About';
-import Contact from './Contact/Contact';
-import Footer from './Footer/Footer'
+import Hero from "./Hero/Hero";
+import Header from "./Header/Header";
+import Combo from "./Combo/Combo";
+import Root from "./Root/RootSection";
+import About from "./About/About";
+import Contact from "./Contact/Contact";
+import Footer from "./Footer/Footer";
+import Load from "./Load/Load";
+
 export default function Home() {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-   <>
-   <Header/>
-   <Hero/>
-   <Combo/>
-   <Explore/>
-   <Root/>
-   <About/>
-   <Contact/>
-   <Footer/>
-   </>
-   
+    <div>
+      {loading ? (
+        <Load />
+      ) : (
+        <>
+          <Header />
+          <Hero />
+          <Combo />
+          <Explore />
+          <Root />
+          <About />
+          <Contact />
+          <Footer />
+        </>
+      )}
+    </div>
   );
 }
