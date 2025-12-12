@@ -1,0 +1,158 @@
+/* ============================================================
+   NAVBAR – LUXURY BLACK GOLD THEME
+============================================================ */
+.custom-navbar {
+  background: rgba(10, 10, 14, 0.75) !important; /* black glass */
+  backdrop-filter: blur(10px);
+
+  padding: 14px 30px;
+  border-bottom-left-radius: 18px;
+  border-bottom-right-radius: 18px;
+
+  border-bottom: 1.5px solid rgba(255, 215, 130, 0.32);
+
+  box-shadow:
+    0 6px 20px rgba(0, 0, 0, 0.45),
+    0 0 14px rgba(255, 215, 130, 0.25);
+}
+/* ============================================================
+   MOBILE TOGGLER – HIGH VISIBILITY GOLD
+============================================================ */
+.navbar-toggler {
+  border-color: #FFD27D !important;
+  border-width: 2px;
+  padding: 6px 10px;
+  border-radius: 8px;
+}
+
+/* Custom Toggler Icon (3 gold bars) */
+.navbar-toggler-icon {
+  background-image: none !important; /* remove bootstrap default */
+  width: 26px;
+  height: 2px;
+  background-color: #FFD27D;  /* bright gold */
+  position: relative;
+  display: inline-block;
+
+  box-shadow: 0 0 6px rgba(255, 215, 130, 0.8);
+}
+
+/* Create top & bottom bars */
+.navbar-toggler-icon::before,
+.navbar-toggler-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 26px;
+  height: 2px;
+  background-color: #FFD27D;
+  box-shadow: 0 0 6px rgba(255, 215, 130, 0.8);
+}
+
+.navbar-toggler-icon::before {
+  top: -7px;
+}
+
+.navbar-toggler-icon::after {
+  top: 7px;
+}
+
+/* On click (expanded) */
+.navbar-toggler:focus,
+.navbar-toggler:hover {
+  box-shadow: 0 0 12px rgba(255, 215, 130, 0.9);
+  border-color: #FFE9A9 !important;
+}
+
+/* BRAND NAME */
+.navbar-brand {
+  color: #FFD27D !important; /* Gold */
+  font-size: 28px;
+  font-weight: 900;
+
+  text-shadow: 0 0 10px rgba(255, 215, 130, 0.55);
+}
+
+.navbar-brand:hover {
+  color: #FFE9A9 !important;
+  text-shadow: 0 0 14px rgba(255, 225, 150, 0.8);
+}
+
+/* ============================================================
+   NAV LINKS
+============================================================ */
+.nav-link {
+  color: #FFE9A9 !important; /* Gold */
+  font-weight: 600;
+  margin-right: 20px;
+  transition: 0.3s ease;
+
+  text-shadow: 0 0 6px rgba(255, 215, 130, 0.25);
+}
+
+.nav-link:hover {
+  color: #FFD27D !important;
+  text-shadow: 0 0 14px rgba(255, 215, 130, 0.8);
+}
+
+/* ============================================================
+   DROPDOWN MENU
+============================================================ */
+.dropdown-menu {
+  background: rgba(20, 20, 25, 0.85);
+  border: 1.5px solid rgba(255, 215, 130, 0.3);
+  border-radius: 12px;
+
+  box-shadow:
+    0 0 18px rgba(255, 200, 110, 0.35),
+    inset 0 0 8px rgba(255, 200, 110, 0.2);
+}
+
+.dropdown-item {
+  color: #FFE9A9 !important;
+  padding: 10px 20px;
+}
+
+.dropdown-item:hover {
+  background: rgba(255, 215, 130, 0.15);
+  color: #FFD27D !important;
+
+  text-shadow: 0 0 10px rgba(255, 215, 130, 0.6);
+}
+
+/* ============================================================
+   LOGIN BUTTON – GOLD OUTLINE
+============================================================ */
+.login-btn {
+  padding: 8px 18px !important;
+  border: 2px solid #FFD27D;
+  border-radius: 25px;
+
+  color: #FFE9A9 !important;
+  font-weight: 700;
+  transition: 0.3s ease;
+
+  text-shadow: 0 0 6px rgba(255, 215, 130, 0.4);
+  box-shadow: 0 0 10px rgba(255, 215, 130, 0.25);
+}
+
+.login-btn:hover {
+  background: linear-gradient(135deg, #FFD27D, #E5B759);
+  color: #0B0B0D !important;
+
+  box-shadow:
+    0 0 22px rgba(255, 215, 130, 0.75),
+    0 0 40px rgba(255, 190, 120, 0.6);
+}
+
+/* ============================================================
+   MOBILE TOGGLER
+============================================================ */
+.navbar-toggler {
+  border-color: #FFD27D !important;
+  border-width: 2px;
+}
+
+.navbar-toggler-icon {
+  filter: brightness(2) drop-shadow(0 0 4px rgba(255, 215, 130, 0.7));
+}
