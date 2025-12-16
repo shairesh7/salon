@@ -1,96 +1,131 @@
 "use client";
 
-import Link from "next/link"; 
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import "./Header.css";
 
-const Header = () => {
+import Login from "../Login/Login";
+import ProfileModal from "../Profile/Profile";
+import Portal from "../Portal/Portal";
+import WomensPortal from "../WomenPortal/WomensPortal";
+
+export default function Header() {
+  const [openLogin, setOpenLogin] = useState(false);
+  const [openProfile, setOpenProfile] = useState(false);
+  const [openServices, setOpenServices] = useState(false);
+  const [serviceType, setServiceType] = useState(null);
+  const [user, setUser] = useState(null);
+  
+useEffect(() => {
+  console.log("serviceType =", serviceType);
+}, [serviceType]);
+
+
+  // Load user from localStorage
+  useEffect(() => {
+    const updateUser = () => {
+      const u = localStorage.getItem("userData");
+      setUser(u ? JSON.parse(u) : null);
+    };
+
+    updateUser();
+    window.addEventListener("storage", updateUser);
+
+    return () => window.removeEventListener("storage", updateUser);
+  }, []);
+
+  // Logout
+  const logout = () => {
+    localStorage.removeItem("userData");
+    window.dispatchEvent(new Event("storage"));
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
-      <div className="container-fluid">
-        
-        <Link className="navbar-brand fw-bold" href="#">
-          Salon
-        </Link>
+    <>
+      {/* NAVBAR */}
+      <nav className="navbar navbar-expand-lg bg-body-tertiary custom-navbar">
+        <div className="container-fluid">
 
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
+          <Link className="navbar-brand fw-bold" href="#">
+            Salon
+          </Link>
 
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav ms-auto mb-lg-0">
-            
-            <li className="nav-item">
-              <Link className="nav-link" href="#home">
-                Home
-              </Link>
-            </li>
+          <button
+            className="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+          >
+            <span className="navbar-toggler-icon"></span>
+          </button>
 
-            <li className="nav-item dropdown">
-              <Link
-                className="nav-link dropdown-toggle"
-                href="#"
-                role="button"
-                data-bs-toggle="dropdown"
-              >
-                Services
-              </Link>
+          <div className="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul className="navbar-nav ms-auto mb-lg-0">
 
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" href="#courses">
-                    Packages
-                  </Link>
+              <li className="nav-item"><Link className="nav-link" href="#home">Home</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="#whyus">Why Us</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="#about">About</Link></li>
+              <li className="nav-item"><Link className="nav-link" href="#contact">Contact</Link></li>
+
+              {!user && (
+                <li className="nav-item">
+                  <button
+                    className="nav-link login-btn btn-link"
+                    onClick={() => setOpenLogin(true)}
+                  >
+                    Log In
+                  </button>
                 </li>
-                <li>
-                  <Link className="dropdown-item" href="#courses">
-                    Women's Styling
-                  </Link>
+              )}
+
+              {user && (
+                <li className="nav-item profile-wrapper">
+                  <div className="profile-icon" onClick={() => setOpenProfile(true)}>
+                    {user.name.charAt(0).toUpperCase()}
+                  </div>
+
+                  
+
+                  <span className="logout-icon" onClick={logout}>⏻</span>
                 </li>
-                <li>
-                  <Link className="dropdown-item" href="#courses">
-                    Men's Grooming
-                  </Link>
-                </li>
-              </ul>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" href="#whyus">
-                Why Us
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" href="#about">
-                About
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link" href="#contact">
-                Contact
-              </Link>
-            </li>
-
-            <li className="nav-item">
-              <Link className="nav-link login-btn" href="#">
-                Log In
-              </Link>
-            </li>
-
-          </ul>
+              )}
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  );
-};
+      </nav>
 
-export default Header;
+      {/* LOGIN MODAL */}
+      {openLogin && (
+        <Portal>
+          <Login onClose={() => setOpenLogin(false)} />
+        </Portal>
+      )}
+
+      {/* PROFILE MODAL */}
+      {openProfile && (
+        <Portal>
+          <ProfileModal
+            onClose={() => setOpenProfile(false)}
+            onOpenServices={(type) => {
+              setServiceType(type);     // "women" | "men" | "packages"
+              setOpenProfile(false);
+              setOpenServices(true);
+            }}
+          />
+        </Portal>
+      )}
+
+      {/* WOMENS PORTAL */}
+      {openServices && serviceType === "women" && (
+        <Portal>
+          <WomensPortal
+            onClose={() => {
+              setOpenServices(false);
+              setServiceType(null);
+            }}
+          />
+        </Portal>
+      )}
+    </>
+  );
+}

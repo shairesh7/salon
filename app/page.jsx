@@ -11,7 +11,7 @@ import About from "./About/About";
 import Contact from "./Contact/Contact";
 import Footer from "./Footer/Footer";
 import Load from "./Load/Load";
-
+import Portal from './Portal/Portal';
 export default function Home() {
   const [loading, setLoading] = useState(true);
 
@@ -34,6 +34,7 @@ export default function Home() {
           <About />
           <Contact />
           <Footer />
+         <Portal/>
         </>
       )}
     </div>

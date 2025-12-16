@@ -60,7 +60,7 @@ export default function ComboSection() {
 
             <img src={combo.img} alt={combo.title} />
 
-            <div className="price">{combo.price}</div>
+            <div className="prices">{combo.price}</div>
 
             <p className="desc">{combo.desc}</p>
 
