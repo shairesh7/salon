@@ -82,7 +82,9 @@
 .btn-primary {
   background: linear-gradient(135deg, #FFD27D, #E5B759);
   color: #0B0B0D;
+  filter: brightness(0.9);
 }
+
 
 .btn-outline {
   background: transparent;

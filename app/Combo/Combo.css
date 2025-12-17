@@ -134,8 +134,9 @@
   border-radius: 40px;
   cursor: pointer;
 
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
+ background: linear-gradient(135deg, #FFD27D, #E5B759);
   color: #0B0B0D;
+  filter: brightness(0.9);
 
   box-shadow:
     0 10px 20px rgba(255, 200, 110, 0.55),

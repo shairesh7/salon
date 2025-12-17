@@ -5,7 +5,7 @@ import "./WomensPortal.css";
 
 export default function WomensPortal({ onClose }) {
   const [womenData, setWomenData] = useState([]);
-  const [currentView, setCurrentView] = useState("LEVEL1"); 
+  const [currentView, setCurrentView] = useState("LEVEL1");
   const [selectedLevel1, setSelectedLevel1] = useState(null);
   const [selectedLevel2, setSelectedLevel2] = useState(null);
 
@@ -30,20 +30,19 @@ export default function WomensPortal({ onClose }) {
     setWomenData(womensStyling.children || []);
   };
 
-const toggleStatus = (service) => {
-  const current = service.pricingStatus || "Active";
-  const next = current === "Active" ? "Inactive" : "Active";
+  const toggleStatus = (service) => {
+    const current = service.pricingStatus || "Active";
+    const next = current === "Active" ? "Inactive" : "Active";
 
-  const confirmChange = window.confirm(
-    `Do you want to make this service ${next}?`
-  );
+    const confirmChange = window.confirm(
+      `Do you want to make this service ${next}?`
+    );
 
-  if (!confirmChange) return;
+    if (!confirmChange) return;
 
-  service.pricingStatus = next;
-  setWomenData([...womenData]);
-};
-
+    service.pricingStatus = next;
+    setWomenData([...womenData]);
+  };
 
   const savePrice = (service) => {
     service.price = Number(priceInput);
@@ -66,14 +65,25 @@ const toggleStatus = (service) => {
           >
             ←
           </span>
-          <h2>
-            {currentView === "LEVEL1" && "Women's Styling"}
-            {currentView === "LEVEL2" && selectedLevel1?.name}
-            {currentView === "SERVICES" && selectedLevel2?.name}
-          </h2>
+
+          <div>
+            <h2>
+              {currentView === "LEVEL1" && "Women's Styling"}
+              {currentView === "LEVEL2" && selectedLevel1?.name}
+              {currentView === "SERVICES" && selectedLevel2?.name}
+            </h2>
+
+            <p className="section-path">
+              {currentView === "LEVEL1" && "You are viewing: Category"}
+              {currentView === "LEVEL2" &&
+                `You are viewing: Women's Styling > ${selectedLevel1?.name}`}
+              {currentView === "SERVICES" &&
+                `You are viewing: Women's Styling > ${selectedLevel1?.name} > ${selectedLevel2?.name}`}
+            </p>
+          </div>
         </div>
 
-        {/* ================= LEVEL 1 ================= */}
+        {/* LEVEL 1 */}
         {currentView === "LEVEL1" &&
           womenData.map((level1) => (
             <div
@@ -89,7 +99,7 @@ const toggleStatus = (service) => {
             </div>
           ))}
 
-        {/* ================= LEVEL 2 ================= */}
+        {/* LEVEL 2 */}
         {currentView === "LEVEL2" &&
           selectedLevel1.children.map((level2) => (
             <div
@@ -105,77 +115,71 @@ const toggleStatus = (service) => {
             </div>
           ))}
 
-        {/* ================= SERVICES ================= */}
-        {/* ================= SERVICES ================= */}
-{currentView === "SERVICES" && (
-  <>
-    {/* TABS */}
-    <div className="services-tabs">
-      <button
-        className={tab === "Active" ? "tab active" : "tab"}
-        onClick={() => setTab("Active")}
-      >
-        Active
-      </button>
-      <button
-        className={tab === "Inactive" ? "tab active" : "tab"}
-        onClick={() => setTab("Inactive")}
-      >
-        Inactive
-      </button>
-    </div>
+        {/* SERVICES */}
+        {currentView === "SERVICES" && (
+          <>
+            <div className="services-tabs">
+              <button
+                className={tab === "Active" ? "tab active" : "tab"}
+                onClick={() => setTab("Active")}
+              >
+                Active
+              </button>
+              <button
+                className={tab === "Inactive" ? "tab active" : "tab"}
+                onClick={() => setTab("Inactive")}
+              >
+                Inactive
+              </button>
+            </div>
 
-    <div className="services-list">
+            <div className="services-list">
 
-      {/* ✅ CASE 1 → LEVEL 2 HAS CHILDREN */}
-      {selectedLevel2.children.length > 0 &&
-        selectedLevel2.children
-          .filter(
-            (s) => (s.pricingStatus || "Active") === tab
-          )
-          .map((service) => (
-            <ServiceCard
-              key={service.id}
-              service={service}
-              level1={selectedLevel1}
-              level2={selectedLevel2}
-              editingId={editingId}
-              setEditingId={setEditingId}
-              priceInput={priceInput}
-              setPriceInput={setPriceInput}
-              toggleStatus={toggleStatus}
-              savePrice={savePrice}
-            />
-          ))}
+              {/* CASE 1: LEVEL 2 HAS CHILDREN */}
+              {selectedLevel2.children.length > 0 &&
+                selectedLevel2.children
+                  .filter((s) => (s.pricingStatus || "Active") === tab)
+                  .map((service) => (
+                    <ServiceCard
+                      key={service.id}
+                      service={service}
+                      tab={tab}
+                      editingId={editingId}
+                      setEditingId={setEditingId}
+                      priceInput={priceInput}
+                      setPriceInput={setPriceInput}
+                      toggleStatus={toggleStatus}
+                      savePrice={savePrice}
+                    />
+                  ))}
 
-      {/* ✅ CASE 2 → LEVEL 2 IS ITSELF A SERVICE (FRINGE CUT) */}
-      {selectedLevel2.children.length === 0 &&
-        (selectedLevel2.pricingStatus || "Active") === tab && (
-          <ServiceCard
-            service={selectedLevel2}
-            level1={selectedLevel1}
-            level2={selectedLevel2}
-            editingId={editingId}
-            setEditingId={setEditingId}
-            priceInput={priceInput}
-            setPriceInput={setPriceInput}
-            toggleStatus={toggleStatus}
-            savePrice={savePrice}
-          />
+              {/* CASE 2: LEVEL 2 IS ITSELF A SERVICE */}
+              {selectedLevel2.children.length === 0 &&
+                (selectedLevel2.pricingStatus || "Active") === tab && (
+                  <ServiceCard
+                    service={selectedLevel2}
+                    tab={tab}
+                    editingId={editingId}
+                    setEditingId={setEditingId}
+                    priceInput={priceInput}
+                    setPriceInput={setPriceInput}
+                    toggleStatus={toggleStatus}
+                    savePrice={savePrice}
+                  />
+                )}
+            </div>
+          </>
         )}
-
-    </div>
-  </>
-)}
-
       </div>
     </div>
   );
 }
+
+/* ================= SERVICE CARD ================= */
+
 function ServiceCard({
   service,
-  level1,
-  level2,
+  tab,
   editingId,
   setEditingId,
   priceInput,
@@ -183,58 +187,112 @@ function ServiceCard({
   toggleStatus,
   savePrice,
 }) {
+  const [options, setOptions] = useState([
+    { id: 1, label: "Short Hair", selected: true },
+    { id: 2, label: "Medium Hair", selected: false },
+    { id: 3, label: "Long Hair", selected: true },
+  ]);
+
+  const isEditing = editingId === service.id;
+
+  const toggleOption = (id) => {
+    setOptions((prev) =>
+      prev.map((opt) =>
+        opt.id === id ? { ...opt, selected: !opt.selected } : opt
+      )
+    );
+  };
+
+  const updateLabel = (id, value) => {
+    setOptions((prev) =>
+      prev.map((opt) =>
+        opt.id === id ? { ...opt, label: value } : opt
+      )
+    );
+  };
+
   return (
     <div className="service-card">
 
+      {/* TOP */}
       <div className="service-top">
         <img src={service.imageUrl} alt={service.name} />
 
         <div className="service-info">
           <h4>{service.name}</h4>
-          <p>{level1.name} ~ {level2.name}</p>
         </div>
 
         <div className="service-right">
-          {editingId === service.id ? (
+          {isEditing ? (
             <>
               <input
                 className="price-input"
                 value={priceInput}
                 onChange={(e) => setPriceInput(e.target.value)}
               />
-              <button
-                className="save-btn"
-                onClick={() => savePrice(service)}
-              >
+              <button className="save-btn" onClick={() => savePrice(service)}>
                 Save
               </button>
             </>
           ) : (
             <>
               <span className="price">₹{service.price}</span>
-              <span
-                className="edit"
-                onClick={() => {
-                  setEditingId(service.id);
-                  setPriceInput(service.price);
-                }}
-              >
-                Edit
-              </span>
+              {tab === "Active" && (
+                <span
+                  className="edit"
+                  onClick={() => {
+                    setEditingId(service.id);
+                    setPriceInput(service.price);
+                  }}
+                >
+                  Edit
+                </span>
+              )}
             </>
           )}
         </div>
       </div>
 
+      {/* OPTIONS */}
+      <div className="option-list">
+        {options
+          .filter((opt) => isEditing || opt.selected)
+          .map((opt) => (
+            <div key={opt.id} className="option-item">
+              {isEditing ? (
+                <>
+                  <input
+                    type="checkbox"
+                    checked={opt.selected}
+                    onChange={() => toggleOption(opt.id)}
+                  />
+                  <input
+                    className="option-input"
+                    value={opt.label}
+                    onChange={(e) =>
+                      updateLabel(opt.id, e.target.value)
+                    }
+                  />
+                </>
+              ) : (
+                <span className="option-text">• {opt.label}</span>
+              )}
+            </div>
+          ))}
+      </div>
+
+      {/* BOTTOM */}
       <div className="service-bottom">
-        <span className="inactive-text">
-          Make this service active
+        <span className="status-text">
+          {tab === "Active"
+            ? "Make this service inactive"
+            : "Make this service active"}
         </span>
 
         <label className="switch">
           <input
             type="checkbox"
-            checked={(service.pricingStatus || "Active") === "Active"}
+            checked={false}               // ALWAYS OFF
             onChange={() => toggleStatus(service)}
           />
           <span className="slider"></span>
@@ -244,4 +302,3 @@ function ServiceCard({
     </div>
   );
 }
-

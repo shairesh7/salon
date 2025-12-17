@@ -82,7 +82,7 @@
 }
 
 /* ===============================
-   SERVICES GRID (3 PER ROW)
+   SERVICES GRID
 ================================ */
 .services-list {
   display: grid;
@@ -95,46 +95,19 @@
 ================================ */
 .service-card {
   padding: 20px;
-  min-height: 170px;        /* ⬅ increased height */
   border-radius: 22px;
   background: rgba(10, 10, 14, 0.98);
   border: 1.5px solid rgba(255, 215, 130, 0.35);
+
+  /* 🔥 FIX */
+  height: auto;            /* allow growth */
+  min-height: unset;       /* REMOVE fixed height */
+  overflow: visible;       /* NEVER clip text */
 }
 
 
 /* ===============================
-   TOP ROW
-================================ */
-
-
-/* Image */
-.service-top img {
-  width: 72px;             /* ⬅ bigger image */
-  height: 72px;
-  border-radius: 18px;
-  object-fit: cover;
-}
-
-
-.service-info {
-  max-width: 55%;
-}
-
-.service-info h4 {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.service-info p {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-
-/* ===============================
-   TOP ROW – GRID LAYOUT
+   TOP ROW (GRID)
 ================================ */
 .service-top {
   position: relative;
@@ -144,73 +117,99 @@
   gap: 16px;
 }
 
+/* Image */
+.service-top img {
+  width: 72px;
+  height: 72px;
+  border-radius: 18px;
+  object-fit: cover;
+}
+
+.service-info {
+ 
+  min-width: 0;   /* 🔥 allows text to wrap correctly */
+
+}
+
+.service-info h4 {
+  white-space: normal;
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;          /* ✅ 2-line heading */
+  -webkit-box-orient: vertical;
+
+  line-height: 1.25;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.service-info p {
+  white-space: normal;
+  overflow: hidden;
+
+  display: -webkit-box;
+  -webkit-line-clamp: 2;          /* ✅ 2-line subtitle */
+  -webkit-box-orient: vertical;
+
+  line-height: 1.3;
+  font-size: 13px;
+  color: rgba(255, 215, 130, 0.85);
+}
+
+
 
 /* ===============================
-   PRICE – CENTER OF CARD
+   PRICE
 ================================ */
 .price {
   min-width: 88px;
   text-align: center;
-
   font-size: 18px;
   font-weight: 900;
-
   padding: 8px 14px;
   border-radius: 20px;
-
   background: rgba(255, 215, 130, 0.18);
   border: 1px solid rgba(255, 215, 130, 0.45);
-
   color: #FFD27D;
-
-  margin-left: 8px; /* ✅ MOVE PRICE SLIGHTLY RIGHT */
+  margin-left: 8px;
 }
 
-
 /* ===============================
-   RIGHT SIDE (EDIT)
+   RIGHT SIDE
 ================================ */
 .service-right {
   display: flex;
   align-items: center;
   justify-content: flex-end;
+  gap: 10px;
   min-width: 90px;
 }
 
 /* ===============================
-   EDIT BUTTON – RIGHT ALIGNED
+   EDIT BUTTON
 ================================ */
 .edit {
   font-size: 12px;
   font-weight: 700;
-
   padding: 6px 16px;
   border-radius: 18px;
   cursor: pointer;
-
   background: rgba(255, 215, 130, 0.15);
   border: 1px solid rgba(255, 215, 130, 0.45);
   color: #FFD27D;
-
   transition: 0.3s ease;
 }
 
 .edit:hover {
   background: linear-gradient(135deg, #FFD27D, #E5B759);
   color: #0B0B0D;
-
-  box-shadow:
-    0 0 18px rgba(255, 215, 130, 0.9),
-    0 0 30px rgba(255, 190, 120, 0.6);
+  box-shadow: 0 0 18px rgba(255, 215, 130, 0.9),
+              0 0 30px rgba(255, 190, 120, 0.6);
 }
 
-
-
-
-
-
 /* ===============================
-   EDIT MODE INPUT
+   EDIT MODE
 ================================ */
 .price-input {
   width: 70px;
@@ -231,18 +230,31 @@
   background: linear-gradient(135deg, #FFD27D, #E5B759);
 }
 
-
 /* ===============================
    BOTTOM ROW
 ================================ */
 .service-bottom {
-  margin-top: 12px;
+  margin-top: 14px;
   padding-top: 10px;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;   /* 🔥 allow multi-line text */
+  gap: 12px;
   border-top: 1px solid rgba(255, 215, 130, 0.25);
 }
+
+
+/* STATUS TEXT */
+.status-text {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 600;
+  color: #FFD27D;
+  line-height: 1.4;
+
+  white-space: normal;
+  word-break: break-word;
+}
+
 
 /* ===============================
    TOGGLE
@@ -284,18 +296,160 @@
 .switch input:checked + .slider::before {
   transform: translateX(22px);
 }
+.option-list {
+  margin: 12px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
 
+.option-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.option-text {
+  font-size: 14px;
+  color: #FFD27D;
+}
+
+.option-input {
+  background: rgba(255, 215, 130, 0.1);
+  border: 1px solid rgba(255, 215, 130, 0.4);
+  border-radius: 8px;
+  padding: 4px 8px;
+  color: #FFD27D;
+  font-size: 14px;
+}
+
+.option-item input[type="checkbox"] {
+  accent-color: #FFD27D;
+}
 /* ===============================
-   RESPONSIVE
+   RESPONSIVE GRID
+================================ */
+/* ===============================
+   LARGE TABLETS (≤ 1024px)
 ================================ */
 @media (max-width: 1024px) {
+
+  .women-card {
+    padding: 24px;
+  }
+
   .services-list {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 cards per row */
+  }
+
+  .service-top img {
+    width: 64px;
+    height: 64px;
+  }
+
+  .price {
+    font-size: 16px;
   }
 }
 
-@media (max-width: 640px) {
+
+/* ===============================
+   SMALL TABLETS & LARGE MOBILES (≤ 768px)
+================================ */
+@media (max-width: 768px) {
+
+  .women-card {
+    width: 100vw;
+    height: 100vh;
+    border-radius: 0;
+    padding: 20px;
+  }
+
+  .services-header {
+    align-items: flex-start;
+  }
+
   .services-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr; /* 1 card per row */
+  }
+
+  .service-top {
+    grid-template-columns: auto 1fr;
+    grid-template-areas:
+      "img info"
+      "price edit";
+    row-gap: 12px;
+  }
+
+  .service-top img {
+    grid-area: img;
+  }
+
+  .service-info {
+    grid-area: info;
+  }
+
+  .service-right {
+    grid-area: edit;
+    justify-content: flex-end;
+  }
+
+  .price {
+    grid-area: price;
   }
 }
+
+
+/* ===============================
+   MOBILE (≤ 480px)
+================================ */
+@media (max-width: 480px) {
+
+  .services-tabs {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .tab {
+    width: 100%;
+  }
+
+  .service-card {
+    padding: 16px;
+  }
+
+  .service-top {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .service-top img {
+    width: 56px;
+    height: 56px;
+  }
+
+  .service-right {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .price {
+    font-size: 16px;
+    padding: 6px 12px;
+  }
+
+  .option-list {
+    gap: 4px;
+  }
+
+  .option-input {
+    width: 100%;
+  }
+
+  .service-bottom {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+}
+

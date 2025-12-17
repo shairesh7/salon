@@ -201,19 +201,21 @@
   border-radius: 40px;
   cursor: pointer;
 
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
+  background: linear-gradient(135deg, #E6BF6A, #CFA94E); /* slightly muted gold */
   color: #0B0B0D;
 
   box-shadow:
-    0 10px 20px rgba(255, 200, 110, 0.55),
-    0 0 30px rgba(255, 180, 90, 0.6);
+    0 6px 14px rgba(255, 200, 110, 0.35),   /* reduced glow */
+    0 0 18px rgba(255, 190, 120, 0.35);     /* softer spread */
 
-  transition: 0.25s;
+  transition: 0.25s ease;
 }
+
 
 .btn-primary:hover {
-  transform: translateY(-3px);
+  transform: translateY(-2px);
   box-shadow:
-    0 14px 28px rgba(255,180,90,0.65),
-    0 0 45px rgba(255,190,120,0.9);
+    0 10px 20px rgba(255, 180, 90, 0.45),
+    0 0 26px rgba(255, 200, 120, 0.55);
 }
+
