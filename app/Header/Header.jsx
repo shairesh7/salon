@@ -78,17 +78,32 @@ useEffect(() => {
                 </li>
               )}
 
-              {user && (
-                <li className="nav-item profile-wrapper">
-                  <div className="profile-icon" onClick={() => setOpenProfile(true)}>
-                    {user.name.charAt(0).toUpperCase()}
-                  </div>
+             {user && (
+  <li className="nav-item profile-wrapper">
 
-                  
+    {/* MY PROFILE */}
+    <div
+      className="profile-action"
+      onClick={() => setOpenProfile(true)}
+    >
+      <span className="profile-icon">
+        {user.name.charAt(0).toUpperCase()}
+      </span>
+      <span className="profile-text">My Profile</span>
+    </div>
 
-                  <span className="logout-icon" onClick={logout}>⏻</span>
-                </li>
-              )}
+    {/* LOGOUT */}
+    <div
+      className="profile-action logout"
+      onClick={logout}
+    >
+      <span className="logout-icon">⏻</span>
+      <span className="profile-text">Logout</span>
+    </div>
+
+  </li>
+)}
+
             </ul>
           </div>
         </div>

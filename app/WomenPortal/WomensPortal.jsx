@@ -240,6 +240,9 @@ export default function WomensPortal({ onClose }) {
 
 /* ================= CARD ================= */
 function ServiceCard({ service, tab, toggleStatus, onEdit }) {
+  const status = service.pricingStatus || "Active";
+  const isActive = status === "Active";
+
   return (
     <div className="service-card">
       <div className="service-top">
@@ -248,11 +251,11 @@ function ServiceCard({ service, tab, toggleStatus, onEdit }) {
 
         <div className="service-right">
           <span className="price">₹{service.price}</span>
-          {tab === "Active" && <span className="edit" onClick={onEdit}>Edit</span>}
+          {isActive && <span className="edit" onClick={onEdit}>Edit</span>}
         </div>
       </div>
 
-      {/* ✅ OPTIONS SHOWN HERE */}
+      {/* OPTIONS */}
       {service.options?.some(o => o.selected) && (
         <div className="option-list">
           {service.options
@@ -263,18 +266,25 @@ function ServiceCard({ service, tab, toggleStatus, onEdit }) {
         </div>
       )}
 
+      {/* ✅ STATUS + BUTTON */}
       <div className="service-bottom">
-        <span className="status-text">
-          {tab === "Active" ? "Make this service inactive" : "Make this service active"}
+        {/* STATUS BADGE */}
+        <span className={`status-badge ${isActive ? "active" : "inactive"}`}>
+          {isActive ? "Active" : "Inactive"}
         </span>
-        <label className="switch">
-          <input type="checkbox" checked={false} onChange={() => toggleStatus(service)} />
-          <span className="slider"></span>
-        </label>
+
+        {/* ACTION BUTTON */}
+        <button
+          className={`status-btn ${isActive ? "deactivate" : "activate"}`}
+          onClick={() => toggleStatus(service)}
+        >
+          {isActive ? "Deactivate Service" : "Activate Service"}
+        </button>
       </div>
     </div>
   );
 }
+
 
 /* ================= OPTIONS EDITOR ================= */
 function ServiceOptionsEditor({ options, setOptions }) {

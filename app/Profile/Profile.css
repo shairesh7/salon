@@ -48,7 +48,7 @@
 ============================================================ */
 .profile-name {
   text-align: center;
-  font-size: 27px;
+  font-size: 28px;              /* 🔥 MAIN HEADING SIZE */
   font-weight: 900;
 
   background: linear-gradient(135deg, #ffe9b6, #ffd27d);
@@ -57,6 +57,7 @@
 
   text-shadow: 0 0 16px rgba(255, 215, 130, 0.4);
 }
+
 
 .profile-phone {
   text-align: center;
@@ -103,15 +104,17 @@
    SECTION TITLES
 ============================================================ */
 .section-title {
-  margin-top: 18px;
-  margin-bottom: 6px;
+  margin-top: 20px;
+  margin-bottom: 8px;
 
-  font-size: 16px;
+  font-size: 16px;              
   font-weight: 700;
 
   color: #ffd27d;
   text-shadow: 0 0 10px rgba(255, 215, 130, 0.6);
+  letter-spacing: 0.4px;
 }
+
 
 /* ============================================================
    ROWS – PRICES / SOCIAL / LINKS
@@ -147,7 +150,8 @@
 ============================================================ */
 .profile-link {
   padding: 5px 0;
-  font-size: 14px;
+ font-size: 16px;              
+  font-weight: 700;
   color: #ffe9b0;
 
   cursor: pointer;
