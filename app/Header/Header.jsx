@@ -8,7 +8,7 @@ import Login from "../Login/Login";
 import ProfileModal from "../Profile/Profile";
 import Portal from "../Portal/Portal";
 import WomensPortal from "../WomenPortal/WomensPortal";
-
+import MensPortal from '../MenPortal/MensPortal';
 export default function Header() {
   const [openLogin, setOpenLogin] = useState(false);
   const [openProfile, setOpenProfile] = useState(false);
@@ -134,6 +134,16 @@ useEffect(() => {
       {openServices && serviceType === "women" && (
         <Portal>
           <WomensPortal
+            onClose={() => {
+              setOpenServices(false);
+              setServiceType(null);
+            }}
+          />
+        </Portal>
+      )}
+       {openServices && serviceType === "men" && (
+        <Portal>
+          <MensPortal
             onClose={() => {
               setOpenServices(false);
               setServiceType(null);
