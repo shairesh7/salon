@@ -295,57 +295,7 @@
   border-top: 1px solid rgba(255, 215, 130, 0.25);
 }
 
-/* Status badge */
-.status-badge {
-  padding: 6px 16px;
-  border-radius: 999px;
-  font-size: 0.85rem;
-  font-weight: 700;
-  letter-spacing: 0.4px;
-}
 
-.status-badge.active {
-  background: linear-gradient(135deg, #1a3d2e, #0a8f55);
-  color: #b6ffdc;
-  box-shadow: 0 0 10px rgba(10, 143, 85, 0.35);
-}
-
-.status-badge.inactive {
-  background: linear-gradient(135deg, #3d1a1a, #c62828);
-  color: #ffd6d6;
-  box-shadow: 0 0 10px rgba(198, 40, 40, 0.35);
-}
-.status-btn {
-  padding: 8px 18px;
-  border-radius: 10px;
-  border: none;
-  font-size: 0.9rem;
-  font-weight: 700;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  letter-spacing: 0.3px;
-}
-
-.status-btn.activate {
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
-  color: #0b0b0d;
-  box-shadow: 0 6px 16px rgba(255, 210, 125, 0.35);
-}
-
-.status-btn.deactivate {
-  background: linear-gradient(135deg, #ff6b6b, #c62828);
-  color: #fff;
-  box-shadow: 0 6px 16px rgba(198, 40, 40, 0.35);
-}
-
-.status-btn:hover {
-  transform: translateY(-1px);
-  opacity: 0.95;
-}
-
-.status-btn:active {
-  transform: scale(0.97);
-}
 
 
 /* STATUS TEXT */
@@ -379,7 +329,7 @@
 
 
 .option-text {
-  font-size: 0.95rem;
+  font-size: 1.3rem;
   font-weight: 500;
   color: #FFD27D;
 }
@@ -744,4 +694,91 @@
     opacity: 1;
     transform: translateY(0) scale(1);
   }
+}
+/* ===============================
+   ACTIVE / INACTIVE TOGGLE
+================================ */
+
+.status-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.status-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #ffd27d;
+}
+
+/* Toggle container */
+.status-toggle {
+  position: relative;
+  width: 140px;
+  height: 36px;
+  cursor: pointer;
+}
+
+.status-toggle input {
+  opacity: 0;
+}
+
+/* Track */
+.status-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(255, 215, 130, 0.25);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+/* Text */
+.status-text {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  z-index: 1;
+  transition: 0.3s ease;
+}
+
+.status-text.active {
+  color: #0a8f55;
+}
+
+.status-text.inactive {
+  color: #c62828;
+}
+
+/* Thumb */
+.status-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 64px;
+  height: 28px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #ffd27d, #e5b759);
+  box-shadow: 0 0 14px rgba(255, 215, 130, 0.6);
+  transition: 0.3s ease;
+}
+
+/* ACTIVE STATE */
+.status-toggle input:checked + .status-track .status-thumb {
+  transform: translateX(68px);
+}
+
+/* ACTIVE emphasis */
+.status-toggle input:checked + .status-track .status-text.active {
+  color: #0b0b0d;
+}
+
+.status-toggle input:not(:checked) + .status-track .status-text.inactive {
+  color: #0b0b0d;
 }

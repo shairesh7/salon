@@ -240,8 +240,7 @@ export default function WomensPortal({ onClose }) {
 
 /* ================= CARD ================= */
 function ServiceCard({ service, tab, toggleStatus, onEdit }) {
-  const status = service.pricingStatus || "Active";
-  const isActive = status === "Active";
+  const isActive = (service.pricingStatus || "Active") === "Active";
 
   return (
     <div className="service-card">
@@ -266,21 +265,27 @@ function ServiceCard({ service, tab, toggleStatus, onEdit }) {
         </div>
       )}
 
-      {/* ✅ STATUS + BUTTON */}
+      {/* ACTION AREA */}
       <div className="service-bottom">
-        {/* STATUS BADGE */}
-        <span className={`status-badge ${isActive ? "active" : "inactive"}`}>
-          {isActive ? "Active" : "Inactive"}
-        </span>
+  <div className="status-toggle-row">
+    <span className="status-label">Service Status</span>
 
-        {/* ACTION BUTTON */}
-        <button
-          className={`status-btn ${isActive ? "deactivate" : "activate"}`}
-          onClick={() => toggleStatus(service)}
-        >
-          {isActive ? "Deactivate Service" : "Activate Service"}
-        </button>
-      </div>
+    <label className="status-toggle">
+      <input
+        type="checkbox"
+        checked={(service.pricingStatus || "Active") === "Active"}
+        onChange={() => toggleStatus(service)}
+      />
+
+      <span className="status-track">
+        <span className="status-text inactive">Inactive</span>
+        <span className="status-text active">Active</span>
+        <span className="status-thumb"></span>
+      </span>
+    </label>
+  </div>
+</div>
+
     </div>
   );
 }
