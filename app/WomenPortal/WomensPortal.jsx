@@ -3,20 +3,37 @@
 import { useEffect, useState } from "react";
 import "./WomensPortal.css";
 
+/* ================= DEFAULT OPTIONS ================= */
+const defaultOptions = () => ([
+  { id: 1, label: "Short Hair", selected: true },
+  { id: 2, label: "Medium Hair", selected: false },
+  { id: 3, label: "Long Hair", selected: true },
+]);
+
+/* ================= MAIN ================= */
 export default function WomensPortal({ onClose }) {
   const [womenData, setWomenData] = useState([]);
   const [currentView, setCurrentView] = useState("LEVEL1");
   const [selectedLevel1, setSelectedLevel1] = useState(null);
   const [selectedLevel2, setSelectedLevel2] = useState(null);
-
   const [tab, setTab] = useState("Active");
-  const [editingId, setEditingId] = useState(null);
-  const [priceInput, setPriceInput] = useState("");
+
+  // Edit Modal
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingService, setEditingService] = useState(null);
+  const [modalPrice, setModalPrice] = useState("");
+  const [modalOptions, setModalOptions] = useState([]);
+
+  // Activate Modal
+  const [showActivateModal, setShowActivateModal] = useState(false);
+  const [pendingService, setPendingService] = useState(null);
+  const [activationPrice, setActivationPrice] = useState("");
 
   useEffect(() => {
     fetchWomenCategories();
   }, []);
 
+  /* ================= FETCH & NORMALIZE ================= */
   const fetchWomenCategories = async () => {
     const res = await fetch(
       "https://newsameep-backend.go-kar.net/api/dummy-vendors/693658821e3f2e6ca0af3ac8/categories"
@@ -27,91 +44,106 @@ export default function WomensPortal({ onClose }) {
       (c) => c.name === "Women's Styling"
     );
 
-    setWomenData(womensStyling.children || []);
+    // 🔥 ENSURE EVERY SERVICE HAS OPTIONS
+    const normalize = (items) =>
+      items.map(item => ({
+        ...item,
+        options: item.options || defaultOptions(),
+        children: item.children ? normalize(item.children) : [],
+      }));
+
+    setWomenData(normalize(womensStyling.children || []));
   };
 
+  /* ================= TOGGLE STATUS ================= */
   const toggleStatus = (service) => {
-    const current = service.pricingStatus || "Active";
-    const next = current === "Active" ? "Inactive" : "Active";
+    if (tab === "Inactive") {
+      setPendingService(service);
+      setActivationPrice(service.price || "");
+      setModalOptions(service.options || defaultOptions());
+      setShowActivateModal(true);
+      return;
+    }
 
-    const confirmChange = window.confirm(
-      `Do you want to make this service ${next}?`
-    );
+    if (!window.confirm("Make this service inactive?")) return;
 
-    if (!confirmChange) return;
-
-    service.pricingStatus = next;
+    service.pricingStatus = "Inactive";
     setWomenData([...womenData]);
   };
 
-  const savePrice = (service) => {
-    service.price = Number(priceInput);
-    setEditingId(null);
-  };
+ const confirmActivateService = () => {
+  pendingService.price = Number(activationPrice);
+
+  // ✅ KEEP ALL OPTIONS
+  pendingService.options = modalOptions;
+
+  pendingService.pricingStatus = "Active";
+  setWomenData([...womenData]);
+
+  setShowActivateModal(false);
+  setPendingService(null);
+};
+
 
   return (
     <div className="women-overlay">
       <div className="women-card">
 
         {/* HEADER */}
-        <div className="services-header">
-          <span
-            className="back-arrow"
-            onClick={() => {
-              if (currentView === "SERVICES") setCurrentView("LEVEL2");
-              else if (currentView === "LEVEL2") setCurrentView("LEVEL1");
-              else onClose();
-            }}
-          >
-            ←
-          </span>
+       <div className="services-header">
+  <span
+    className="back-arrow"
+    onClick={() => {
+      if (currentView === "SERVICES") setCurrentView("LEVEL2");
+      else if (currentView === "LEVEL2") setCurrentView("LEVEL1");
+      else onClose();
+    }}
+  >
+    ←
+  </span>
 
-          <div>
-            <h2>
-              {currentView === "LEVEL1" && "Women's Styling"}
-              {currentView === "LEVEL2" && selectedLevel1?.name}
-              {currentView === "SERVICES" && selectedLevel2?.name}
-            </h2>
+  <div className="header-text">
+    <h2>
+      {currentView === "LEVEL1" && "Women's Styling"}
+      {currentView === "LEVEL2" && selectedLevel1?.name}
+      {currentView === "SERVICES" && selectedLevel2?.name}
+    </h2>
 
-            <p className="section-path">
-              {currentView === "LEVEL1" && "You are viewing: Category"}
-              {currentView === "LEVEL2" &&
-                `You are viewing: Women's Styling > ${selectedLevel1?.name}`}
-              {currentView === "SERVICES" &&
-                `You are viewing: Women's Styling > ${selectedLevel1?.name} > ${selectedLevel2?.name}`}
-            </p>
-          </div>
-        </div>
+    {/* ✅ RESTORED BREADCRUMB */}
+    <p className="section-path">
+      {currentView === "LEVEL1" && "You are viewing: Category"}
+      {currentView === "LEVEL2" &&
+        `You are viewing: Women's Styling > ${selectedLevel1?.name}`}
+      {currentView === "SERVICES" &&
+        `You are viewing: Women's Styling > ${selectedLevel1?.name} > ${selectedLevel2?.name}`}
+    </p>
+  </div>
+</div>
+
+
+        
 
         {/* LEVEL 1 */}
         {currentView === "LEVEL1" &&
-          womenData.map((level1) => (
-            <div
-              key={level1.id}
-              className="category-title"
+          womenData.map(l1 => (
+            <div key={l1.id} className="category-title"
               onClick={() => {
-                setSelectedLevel1(level1);
+                setSelectedLevel1(l1);
                 setCurrentView("LEVEL2");
-              }}
-            >
-              {level1.name}
-              <span>›</span>
+              }}>
+              {l1.name}
             </div>
           ))}
 
         {/* LEVEL 2 */}
         {currentView === "LEVEL2" &&
-          selectedLevel1.children.map((level2) => (
-            <div
-              key={level2.id}
-              className="subcategory-title"
+          selectedLevel1.children.map(l2 => (
+            <div key={l2.id} className="subcategory-title"
               onClick={() => {
-                setSelectedLevel2(level2);
+                setSelectedLevel2(l2);
                 setCurrentView("SERVICES");
-              }}
-            >
-              {level2.name}
-              <span>›</span>
+              }}>
+              {l2.name}
             </div>
           ))}
 
@@ -119,186 +151,164 @@ export default function WomensPortal({ onClose }) {
         {currentView === "SERVICES" && (
           <>
             <div className="services-tabs">
-              <button
-                className={tab === "Active" ? "tab active" : "tab"}
-                onClick={() => setTab("Active")}
-              >
-                Active
-              </button>
-              <button
-                className={tab === "Inactive" ? "tab active" : "tab"}
-                onClick={() => setTab("Inactive")}
-              >
-                Inactive
-              </button>
+              <button className={tab === "Active" ? "tab active" : "tab"} onClick={() => setTab("Active")}>Active</button>
+              <button className={tab === "Inactive" ? "tab active" : "tab"} onClick={() => setTab("Inactive")}>Inactive</button>
             </div>
 
             <div className="services-list">
-
-              {/* CASE 1: LEVEL 2 HAS CHILDREN */}
-              {selectedLevel2.children.length > 0 &&
-                selectedLevel2.children
-                  .filter((s) => (s.pricingStatus || "Active") === tab)
-                  .map((service) => (
-                    <ServiceCard
-                      key={service.id}
-                      service={service}
-                      tab={tab}
-                      editingId={editingId}
-                      setEditingId={setEditingId}
-                      priceInput={priceInput}
-                      setPriceInput={setPriceInput}
-                      toggleStatus={toggleStatus}
-                      savePrice={savePrice}
-                    />
-                  ))}
-
-              {/* CASE 2: LEVEL 2 IS ITSELF A SERVICE */}
-              {selectedLevel2.children.length === 0 &&
-                (selectedLevel2.pricingStatus || "Active") === tab && (
+              {(selectedLevel2.children.length ? selectedLevel2.children : [selectedLevel2])
+                .filter(s => (s.pricingStatus || "Active") === tab)
+                .map(service => (
                   <ServiceCard
-                    service={selectedLevel2}
+                    key={service.id}
+                    service={service}
                     tab={tab}
-                    editingId={editingId}
-                    setEditingId={setEditingId}
-                    priceInput={priceInput}
-                    setPriceInput={setPriceInput}
                     toggleStatus={toggleStatus}
-                    savePrice={savePrice}
+                    onEdit={() => {
+                      setEditingService(service);
+                      setModalPrice(service.price || "");
+                      setModalOptions(service.options || defaultOptions());
+                      setShowEditModal(true);
+                    }}
                   />
-                )}
+                ))}
             </div>
           </>
         )}
+      </div>
+
+      {/* EDIT MODAL */}
+      {showEditModal && editingService && (
+        <Modal title="Edit Service" onClose={() => setShowEditModal(false)}>
+          <label>Price</label>
+          <input className="price-input" value={modalPrice} onChange={e => setModalPrice(e.target.value)} />
+
+          <ServiceOptionsEditor options={modalOptions} setOptions={setModalOptions} />
+
+         <button
+  className="btn-primary"
+  onClick={() => {
+    editingService.price = Number(modalPrice);
+
+    // ✅ KEEP ALL OPTIONS
+    editingService.options = modalOptions;
+
+    setWomenData([...womenData]);
+    setShowEditModal(false);
+  }}
+>
+  Save
+</button>
+
+        </Modal>
+      )}
+
+      {/* ACTIVATE MODAL */}
+     {showActivateModal && pendingService && (
+  <Modal title="Activate Service" onClose={() => setShowActivateModal(false)}>
+
+    {/* 🔲 INNER CARD */}
+    <div className="activate-inner-card">
+
+      <label className="modal-label">Price</label>
+      <input
+        className="price-input"
+        value={activationPrice}
+        onChange={e => setActivationPrice(e.target.value)}
+      />
+
+      <ServiceOptionsEditor
+        options={modalOptions}
+        setOptions={setModalOptions}
+      />
+
+    </div>
+
+    <button
+      className="btn-primary"
+      onClick={confirmActivateService}
+    >
+      Activate
+    </button>
+
+  </Modal>
+)}
+
+    </div>
+  );
+}
+
+/* ================= CARD ================= */
+function ServiceCard({ service, tab, toggleStatus, onEdit }) {
+  return (
+    <div className="service-card">
+      <div className="service-top">
+        <img src={service.imageUrl} alt={service.name} />
+        <h4>{service.name}</h4>
+
+        <div className="service-right">
+          <span className="price">₹{service.price}</span>
+          {tab === "Active" && <span className="edit" onClick={onEdit}>Edit</span>}
+        </div>
+      </div>
+
+      {/* ✅ OPTIONS SHOWN HERE */}
+      {service.options?.some(o => o.selected) && (
+        <div className="option-list">
+          {service.options
+            .filter(o => o.selected)
+            .map(o => (
+              <span key={o.id} className="option-text">• {o.label}</span>
+            ))}
+        </div>
+      )}
+
+      <div className="service-bottom">
+        <span className="status-text">
+          {tab === "Active" ? "Make this service inactive" : "Make this service active"}
+        </span>
+        <label className="switch">
+          <input type="checkbox" checked={false} onChange={() => toggleStatus(service)} />
+          <span className="slider"></span>
+        </label>
       </div>
     </div>
   );
 }
 
-/* ================= SERVICE CARD ================= */
-
-function ServiceCard({
-  service,
-  tab,
-  editingId,
-  setEditingId,
-  priceInput,
-  setPriceInput,
-  toggleStatus,
-  savePrice,
-}) {
-  const [options, setOptions] = useState([
-    { id: 1, label: "Short Hair", selected: true },
-    { id: 2, label: "Medium Hair", selected: false },
-    { id: 3, label: "Long Hair", selected: true },
-  ]);
-
-  const isEditing = editingId === service.id;
-
-  const toggleOption = (id) => {
-    setOptions((prev) =>
-      prev.map((opt) =>
-        opt.id === id ? { ...opt, selected: !opt.selected } : opt
-      )
-    );
-  };
-
-  const updateLabel = (id, value) => {
-    setOptions((prev) =>
-      prev.map((opt) =>
-        opt.id === id ? { ...opt, label: value } : opt
-      )
-    );
-  };
-
+/* ================= OPTIONS EDITOR ================= */
+function ServiceOptionsEditor({ options, setOptions }) {
   return (
-    <div className="service-card">
-
-      {/* TOP */}
-      <div className="service-top">
-        <img src={service.imageUrl} alt={service.name} />
-
-        <div className="service-info">
-          <h4>{service.name}</h4>
-        </div>
-
-        <div className="service-right">
-          {isEditing ? (
-            <>
-              <input
-                className="price-input"
-                value={priceInput}
-                onChange={(e) => setPriceInput(e.target.value)}
-              />
-              <button className="save-btn" onClick={() => savePrice(service)}>
-                Save
-              </button>
-            </>
-          ) : (
-            <>
-              <span className="price">₹{service.price}</span>
-              {tab === "Active" && (
-                <span
-                  className="edit"
-                  onClick={() => {
-                    setEditingId(service.id);
-                    setPriceInput(service.price);
-                  }}
-                >
-                  Edit
-                </span>
-              )}
-            </>
-          )}
-        </div>
-      </div>
-
-      {/* OPTIONS */}
-      <div className="option-list">
-        {options
-          .filter((opt) => isEditing || opt.selected)
-          .map((opt) => (
-            <div key={opt.id} className="option-item">
-              {isEditing ? (
-                <>
-                  <input
-                    type="checkbox"
-                    checked={opt.selected}
-                    onChange={() => toggleOption(opt.id)}
-                  />
-                  <input
-                    className="option-input"
-                    value={opt.label}
-                    onChange={(e) =>
-                      updateLabel(opt.id, e.target.value)
-                    }
-                  />
-                </>
-              ) : (
-                <span className="option-text">• {opt.label}</span>
-              )}
-            </div>
-          ))}
-      </div>
-
-      {/* BOTTOM */}
-      <div className="service-bottom">
-        <span className="status-text">
-          {tab === "Active"
-            ? "Make this service inactive"
-            : "Make this service active"}
-        </span>
-
-        <label className="switch">
+    <div className="option-list">
+      {options.map(o => (
+        <label key={o.id} className="option-item">
           <input
             type="checkbox"
-            checked={false}               // ALWAYS OFF
-            onChange={() => toggleStatus(service)}
+            checked={o.selected}
+            onChange={() =>
+              setOptions(prev =>
+                prev.map(x =>
+                  x.id === o.id ? { ...x, selected: !x.selected } : x
+                )
+              )
+            }
           />
-          <span className="slider"></span>
+          <span className="option-text">{o.label}</span>
         </label>
-      </div>
+      ))}
+    </div>
+  );
+}
 
+/* ================= MODAL ================= */
+function Modal({ title, children, onClose }) {
+  return (
+    <div className="activate-overlay">
+      <div className="activate-modal">
+        <h3>{title}</h3>
+        {children}
+        <button className="btn-secondary" onClick={onClose}>Cancel</button>
+      </div>
     </div>
   );
 }

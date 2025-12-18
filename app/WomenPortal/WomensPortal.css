@@ -36,10 +36,44 @@
   margin-bottom: 16px;
 }
 
+/* ===============================
+   BACK BUTTON (BIG & TAP FRIENDLY)
+================================ */
 .back-arrow {
-  font-size: 22px;
+  font-size: 28px;                     /* bigger arrow */
+  width: 46px;
+  height: 46px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
   cursor: pointer;
+
+  background: rgba(255, 215, 130, 0.12);
+  border: 1.5px solid rgba(255, 215, 130, 0.4);
+  color: #FFD27D;
+
+  transition: 0.25s ease;
 }
+
+/* hover */
+.back-arrow:hover {
+  background: linear-gradient(135deg, #FFD27D, #E6BF6A);
+  color: #0B0B0D;
+  box-shadow: 0 0 16px rgba(255, 215, 130, 0.6);
+}
+
+/* mobile touch area */
+@media (max-width: 768px) {
+  .back-arrow {
+    width: 52px;
+    height: 52px;
+    font-size: 30px;
+  }
+}
+
 
 /* ===============================
    TABS
@@ -52,21 +86,35 @@
   margin-bottom: 18px;
 }
 
+/* ===============================
+   TABS – BASE
+================================ */
 .tab {
   flex: 1;
   padding: 10px;
   border: none;
   cursor: pointer;
   background: transparent;
-  color: rgba(255, 215, 130, 0.6);
+
+  color: rgba(255, 215, 130, 0.85);   /* 🔥 brighter than before */
   font-weight: 700;
   border-radius: 25px;
+
+  transition: all 0.25s ease;
 }
 
 .tab.active {
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
+  background: linear-gradient(135deg, #E6BF6A, #CFA94E);
   color: #0B0B0D;
+
+  box-shadow:
+    0 6px 14px rgba(255, 200, 110, 0.45);
 }
+.tab:not(.active):hover {
+  background: rgba(255, 215, 130, 0.12);
+  color: #FFD27D;
+}
+
 
 /* ===============================
    CATEGORY
@@ -246,7 +294,7 @@
 /* STATUS TEXT */
 .status-text {
   flex: 1;
-  font-size: 14px;
+  font-size: 20px;
   font-weight: 600;
   color: #FFD27D;
   line-height: 1.4;
@@ -310,7 +358,7 @@
 }
 
 .option-text {
-  font-size: 14px;
+  font-size: 24px;
   color: #FFD27D;
 }
 
@@ -323,9 +371,39 @@
   font-size: 14px;
 }
 
+/* ===============================
+   BIG RADIO-STYLE CHECKBOX
+================================ */
 .option-item input[type="checkbox"] {
-  accent-color: #FFD27D;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;                 /* radio look */
+  border: 2px solid rgba(255, 215, 130, 0.8);
+  background: transparent;
+  cursor: pointer;
+  position: relative;
+  transition: 0.25s ease;
 }
+
+/* checked state */
+.option-item input[type="checkbox"]:checked {
+  background: radial-gradient(
+    circle at center,
+    #FFD27D 45%,
+    transparent 46%
+  );
+  box-shadow: 0 0 10px rgba(255, 215, 130, 0.6);
+}
+
+/* hover */
+.option-item input[type="checkbox"]:hover {
+  box-shadow: 0 0 12px rgba(255, 215, 130, 0.45);
+}
+
 /* ===============================
    RESPONSIVE GRID
 ================================ */
@@ -452,4 +530,200 @@
     gap: 10px;
   }
 }
+/* ACTIVATE MODAL */
+.activate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 12, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.activate-modal input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  accent-color: #FFD27D;
+  cursor: pointer;
+}
+.activate-modal .option-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: #FFD27D;
+}
+.modal-actions {
+  display: flex;
+  gap: 14px;
+  margin-top: 24px;
+}
+.btn-secondary {
+  flex: 1;
+  padding: 12px;
+
+  border-radius: 22px;
+  border: 1.5px solid rgba(255, 215, 130, 0.45);
+
+  background: transparent;
+  color: #FFD27D;
+
+  font-weight: 800;
+  cursor: pointer;
+  transition: 0.25s ease;
+}
+.btn-secondary:hover {
+  background: rgba(255, 215, 130, 0.15);
+}
+.btn-primary {
+  flex: 1;
+  padding: 12px;
+
+  border-radius: 22px;
+  border: none;
+
+  font-weight: 900;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #EBC46A, #CFA84F);
+  color: #0B0B0D;
+
+  box-shadow:
+    0 8px 18px rgba(255, 200, 110, 0.35),
+    0 0 18px rgba(255, 190, 100, 0.45);
+
+  transition: 0.25s ease;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 26px rgba(255, 190, 100, 0.55),
+    0 0 30px rgba(255, 200, 120, 0.75);
+}
+/* ===============================
+   ACTIVATE SERVICE – INNER CARD
+================================ */
+.activate-inner-card {
+  margin: 18px 0 22px;
+  padding: 20px 18px;
+
+  border-radius: 22px;
+
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 215, 130, 0.45);
+
+  box-shadow:
+    inset 0 0 20px rgba(255, 200, 110, 0.18),
+    0 0 22px rgba(0, 0, 0, 0.45);
+}
+
+
+.activate-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 12, 0.85);
+  backdrop-filter: blur(8px);
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.modal-label,
+.activate-modal label {
+  display: block;
+  margin: 14px 0 6px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+
+  color: rgba(255, 215, 130, 0.85);
+  text-transform: uppercase;
+}
+
+
+.activate-modal h3 {
+  margin-bottom: 18px;
+  text-align: center;
+
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+
+  color: #FFD27D;
+  text-shadow: 0 0 14px rgba(255, 210, 120, 0.6);
+}
+.activate-modal .price-input {
+  width: 100%;
+  padding: 12px 14px;
+
+  border-radius: 14px;
+  border: 1.5px solid rgba(255, 215, 130, 0.45);
+
+  background: rgba(255, 215, 130, 0.1);
+  color: #FFD27D;
+
+  font-size: 16px;
+  font-weight: 700;
+  text-align: center;
+
+  outline: none;
+}
+
+.activate-modal .price-input:focus {
+  border-color: #FFD27D;
+  box-shadow: 0 0 16px rgba(255, 215, 130, 0.6);
+}
+.activate-modal .option-list {
+  margin-top: 18px;
+  padding: 14px;
+
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1px dashed rgba(255, 215, 130, 0.35);
+}
+.activate-modal .option-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  margin-bottom: 10px;
+}
+.activate-modal .option-item:last-child {
+  margin-bottom: 0;
+}
+
+.modal-label {
+  font-size: 13px;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn-secondary {
+  flex: 1;
+  padding: 12px;
+  border-radius: 30px;
+  background: transparent;
+  border: 1px solid rgba(255,215,130,0.4);
+  color: #FFD27D;
+  cursor: pointer;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
