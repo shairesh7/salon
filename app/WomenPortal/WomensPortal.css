@@ -12,9 +12,6 @@
   align-items: center;
 }
 
-
-
-
 /* ===============================
    MAIN CARD
 ================================ */
@@ -41,90 +38,31 @@
 }
 
 /* ===============================
-   BACK BUTTON (BIG & TAP FRIENDLY)
+   BACK BUTTON
 ================================ */
 .back-arrow {
   font-size: 28px;
-  /* bigger arrow */
   width: 46px;
   height: 46px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
   cursor: pointer;
-
   background: rgba(255, 215, 130, 0.12);
   border: 1.5px solid rgba(255, 215, 130, 0.4);
   color: #FFD27D;
-
   transition: 0.25s ease;
 }
 
-/* hover */
 .back-arrow:hover {
   background: linear-gradient(135deg, #FFD27D, #E6BF6A);
   color: #0B0B0D;
   box-shadow: 0 0 16px rgba(255, 215, 130, 0.6);
 }
 
-/* mobile touch area */
-@media (max-width: 768px) {
-  .back-arrow {
-    width: 52px;
-    height: 52px;
-    font-size: 30px;
-  }
-}
-
-
 /* ===============================
-   TABS
-================================ */
-.services-tabs {
-  display: flex;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 30px;
-  padding: 4px;
-  margin-bottom: 18px;
-}
-
-/* ===============================
-   TABS – BASE
-================================ */
-.tab {
-  flex: 1;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  background: transparent;
-
-  color: rgba(255, 215, 130, 0.85);
-  /* 🔥 brighter than before */
-  font-weight: 700;
-  border-radius: 25px;
-
-  transition: all 0.25s ease;
-}
-
-.tab.active {
-  background: linear-gradient(135deg, #E6BF6A, #CFA94E);
-  color: #0B0B0D;
-
-  box-shadow:
-    0 6px 14px rgba(255, 200, 110, 0.45);
-}
-
-.tab:not(.active):hover {
-  background: rgba(255, 215, 130, 0.12);
-  color: #FFD27D;
-}
-
-
-/* ===============================
-   CATEGORY
+   CATEGORY & SUBCATEGORY
 ================================ */
 .category-title,
 .subcategory-title {
@@ -153,29 +91,18 @@
   border-radius: 22px;
   background: rgba(10, 10, 14, 0.98);
   border: 1.5px solid rgba(255, 215, 130, 0.35);
-
-  /* 🔥 FIX */
-  height: auto;
-  /* allow growth */
-  min-height: unset;
-  /* REMOVE fixed height */
-  overflow: visible;
-  /* NEVER clip text */
 }
 
-
 /* ===============================
-   TOP ROW (GRID)
+   SERVICE TOP
 ================================ */
 .service-top {
-  position: relative;
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;
   align-items: center;
   gap: 16px;
 }
 
-/* Image */
 .service-top img {
   width: 72px;
   height: 72px;
@@ -183,73 +110,30 @@
   object-fit: cover;
 }
 
-.service-info {
-
-  min-width: 0;
-  /* 🔥 allows text to wrap correctly */
-
-}
-
-.service-info h4 {
-  white-space: normal;
-  overflow: hidden;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  /* ✅ 2-line heading */
-  -webkit-box-orient: vertical;
-
-  line-height: 1.25;
+.service-top h4 {
   font-size: 16px;
   font-weight: 700;
-}
-
-.service-info p {
-  white-space: normal;
-  overflow: hidden;
-
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  /* ✅ 2-line subtitle */
-  -webkit-box-orient: vertical;
-
   line-height: 1.3;
-  font-size: 13px;
-  color: rgba(255, 215, 130, 0.85);
 }
-
-
 
 /* ===============================
-   PRICE
+   PRICE & EDIT
 ================================ */
+.service-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .price {
-  min-width: 88px;
-  text-align: center;
   font-size: 18px;
   font-weight: 900;
   padding: 8px 14px;
   border-radius: 20px;
   background: rgba(255, 215, 130, 0.18);
   border: 1px solid rgba(255, 215, 130, 0.45);
-  color: #FFD27D;
-  margin-left: 8px;
 }
 
-/* ===============================
-   RIGHT SIDE
-================================ */
-.service-right {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  gap: 10px;
-  min-width: 90px;
-}
-
-/* ===============================
-   EDIT BUTTON
-================================ */
 .edit {
   font-size: 12px;
   font-weight: 700;
@@ -258,73 +142,13 @@
   cursor: pointer;
   background: rgba(255, 215, 130, 0.15);
   border: 1px solid rgba(255, 215, 130, 0.45);
-  color: #FFD27D;
-  transition: 0.3s ease;
-}
-
-.edit:hover {
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
-  color: #0B0B0D;
-  box-shadow: 0 0 18px rgba(255, 215, 130, 0.9),
-    0 0 30px rgba(255, 190, 120, 0.6);
 }
 
 /* ===============================
-   EDIT MODE
+   OPTIONS
 ================================ */
-.price-input {
-  width: 70px;
-  padding: 6px;
-  text-align: center;
-  border-radius: 10px;
-  border: 1px solid rgba(255, 215, 130, 0.4);
-  background: rgba(255, 215, 130, 0.12);
-  color: #FFD27D;
-}
-
-.save-btn {
-  padding: 6px 14px;
-  border-radius: 16px;
-  border: none;
-  font-weight: 700;
-  cursor: pointer;
-  background: linear-gradient(135deg, #FFD27D, #E5B759);
-}
-
-/* ===============================
-   BOTTOM ROW
-================================ */
-.service-bottom {
-  margin-top: 14px;
-  padding-top: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 14px;
-  border-top: 1px solid rgba(255, 215, 130, 0.25);
-}
-
-
-
-
-/* STATUS TEXT */
-
-
-
-/* ===============================
-   TOGGLE
-================================ */
-
-
-.switch input {
-  opacity: 0;
-}
-
-
-
-
 .option-list {
-  margin: 14px 0 6px;
+  margin: 14px 0;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -336,21 +160,9 @@
   gap: 10px;
 }
 
-
 .option-text {
-  font-size: 1.3rem;
-  font-weight: 500;
+  font-size: 1.1rem;
   color: #FFD27D;
-}
-
-
-.option-input {
-  background: rgba(255, 215, 130, 0.1);
-  border: 1px solid rgba(255, 215, 130, 0.4);
-  border-radius: 8px;
-  padding: 4px 8px;
-  color: #FFD27D;
-  font-size: 14px;
 }
 
 .option-item input[type="checkbox"] {
@@ -359,61 +171,161 @@
   height: 20px;
   border-radius: 6px;
   border: 2px solid rgba(255, 215, 130, 0.8);
-  background: transparent;
   cursor: pointer;
-  position: relative;
-  transition: all 0.25s ease;
 }
 
 .option-item input[type="checkbox"]:checked {
   background: linear-gradient(135deg, #FFD27D, #E5B759);
-  border-color: #FFD27D;
 }
 
-.option-item input[type="checkbox"]:checked::after {
-  content: "✓";
+/* ===============================
+   ACTION AREA
+================================ */
+/* ===============================
+   BIG ACTIVE / INACTIVE TOGGLE
+================================ */
+
+.status-toggle-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.toggle-label {
+  font-size: 15px;
+  font-weight: 700;
+  color: #ffd27d;
+}
+
+/* Toggle container */
+.big-toggle {
+  position: relative;
+  width: 180px;
+  height: 44px;
+  cursor: pointer;
+}
+
+.big-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Track */
+.big-toggle-track {
   position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  font-size: 14px;
-  font-weight: 800;
+  inset: 0;
+  border-radius: 999px;
+  background: rgba(255, 215, 130, 0.25);
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 18px;
+
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+
+/* Text */
+.big-toggle-text {
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  z-index: 1;
+  transition: 0.3s ease;
+}
+
+.big-toggle-text.active {
+  color: #0a8f55;
+}
+
+.big-toggle-text.inactive {
+  color: #c62828;
+}
+
+/* Thumb */
+.big-toggle-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 80px;
+  height: 36px;
+  border-radius: 999px;
+
+  background: linear-gradient(135deg, #ffd27d, #e5b759);
+  box-shadow: 0 0 16px rgba(255, 215, 130, 0.7);
+
+  transition: 0.3s ease;
+}
+
+/* ACTIVE STATE */
+.big-toggle input:checked + .big-toggle-track .big-toggle-thumb {
+  transform: translateX(92px);
+}
+
+/* Text emphasis */
+.big-toggle input:checked + .big-toggle-track .big-toggle-text.active {
   color: #0b0b0d;
 }
 
-/* ===============================
-   RESPONSIVE GRID
-================================ */
-/* ===============================
-   LARGE TABLETS (≤ 1024px)
-================================ */
-@media (max-width: 1024px) {
-
-  .women-card {
-    padding: 24px;
-  }
-
-  .services-list {
-    grid-template-columns: repeat(2, 1fr);
-    /* 2 cards per row */
-  }
-
-  .service-top img {
-    width: 64px;
-    height: 64px;
-  }
-
-  .price {
-    font-size: 16px;
-  }
+.big-toggle input:not(:checked) + .big-toggle-track .big-toggle-text.inactive {
+  color: #0b0b0d;
 }
 
 
-/* ===============================
-   SMALL TABLETS & LARGE MOBILES (≤ 768px)
-================================ */
-@media (max-width: 768px) {
 
+
+
+/* ===============================
+   INACTIVE SECTION
+================================ */
+.inactive-divider {
+  grid-column: 1 / -1;
+  margin: 26px 0 10px;
+  padding-top: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: rgba(255, 215, 130, 0.7);
+  border-top: 1px dashed rgba(255, 215, 130, 0.35);
+}
+
+.inactive-card {
+  opacity: 0.75;
+}
+/* ===============================
+   CARD STATUS STYLING
+================================ */
+
+/* ACTIVE SERVICE CARD */
+.service-card.active-card {
+  border: 1.8px solid rgba(20, 180, 110, 0.75);
+  box-shadow:
+    0 0 0 1px rgba(20, 180, 110, 0.35),
+    0 0 16px rgba(20, 180, 110, 0.35);
+}
+
+/* INACTIVE SERVICE CARD */
+.service-card.inactive-card {
+  border: 1.5px solid rgba(255, 120, 120, 0.45);
+  box-shadow:
+    0 0 14px rgba(255, 120, 120, 0.35);
+  opacity: 0.8;
+}
+
+/* ===============================
+   RESPONSIVE
+================================ */
+@media (max-width: 1024px) {
+  .services-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
   .women-card {
     width: 100vw;
     height: 100vh;
@@ -421,86 +333,8 @@
     padding: 20px;
   }
 
-  .services-header {
-    align-items: flex-start;
-  }
-
   .services-list {
     grid-template-columns: 1fr;
-    /* 1 card per row */
-  }
-
-  .service-top {
-    grid-template-columns: auto 1fr;
-    grid-template-areas:
-      "img info"
-      "price edit";
-    row-gap: 12px;
-  }
-
-  .service-top img {
-    grid-area: img;
-  }
-
-  .service-info {
-    grid-area: info;
-  }
-
-  .service-right {
-    grid-area: edit;
-    justify-content: flex-end;
-  }
-
-  .price {
-    grid-area: price;
-  }
-}
-
-
-/* ===============================
-   MOBILE (≤ 480px)
-================================ */
-@media (max-width: 480px) {
-
-  .services-tabs {
-    flex-direction: column;
-    gap: 8px;
-  }
-
-  .tab {
-    width: 100%;
-  }
-
-  .service-card {
-    padding: 16px;
-  }
-
-  .service-top {
-    grid-template-columns: 1fr;
-    gap: 10px;
-  }
-
-  .service-top img {
-    width: 56px;
-    height: 56px;
-  }
-
-  .service-right {
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .price {
-    font-size: 16px;
-    padding: 6px 12px;
-  }
-
-  .option-list {
-    gap: 4px;
-  }
-
-  .option-input {
-    width: 100%;
   }
 
   .service-bottom {
@@ -509,141 +343,80 @@
     gap: 10px;
   }
 }
+/* ============================================================
+   ACTIVATE SERVICE MODAL – FIXED & CENTERED
+============================================================ */
 
-/* ACTIVATE MODAL */
+/* Overlay */
 .activate-overlay {
   position: fixed;
   inset: 0;
+  z-index: 10000;
+
   background: rgba(8, 8, 12, 0.85);
   backdrop-filter: blur(8px);
-  z-index: 10000;
 
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.activate-modal input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
-  accent-color: #FFD27D;
-  cursor: pointer;
-}
+/* Modal Card */
+.activate-modal {
+  width: 92%;
+  max-width: 420px;
 
-.activate-modal .option-text {
-  font-size: 15px;
-  font-weight: 600;
-  color: #FFD27D;
-}
+  background: rgba(15, 15, 20, 0.98);
+  border-radius: 28px;
+  padding: 28px;
 
-.modal-actions {
-  display: flex;
-  gap: 14px;
-  margin-top: 24px;
-}
-
-.btn-secondary {
-  flex: 1;
-  padding: 12px;
-
-  border-radius: 22px;
-  border: 1.5px solid rgba(255, 215, 130, 0.45);
-
-  background: transparent;
-  color: #FFD27D;
-
-  font-weight: 800;
-  cursor: pointer;
-  transition: 0.25s ease;
-}
-
-.btn-secondary:hover {
-  background: rgba(255, 215, 130, 0.15);
-}
-
-.btn-primary {
-  flex: 1;
-  padding: 12px;
-
-  border-radius: 22px;
-  border: none;
-
-  font-weight: 900;
-  cursor: pointer;
-
-  background: linear-gradient(135deg, #EBC46A, #CFA84F);
-  color: #0B0B0D;
-
+  border: 2px solid rgba(255, 215, 130, 0.45);
   box-shadow:
-    0 8px 18px rgba(255, 200, 110, 0.35),
-    0 0 18px rgba(255, 190, 100, 0.45);
+    0 25px 70px rgba(0, 0, 0, 0.7),
+    0 0 35px rgba(255, 215, 130, 0.35);
 
-  transition: 0.25s ease;
+  animation: activateFadeIn 0.25s ease-out;
 }
 
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow:
-    0 12px 26px rgba(255, 190, 100, 0.55),
-    0 0 30px rgba(255, 200, 120, 0.75);
-}
-
-/* ===============================
-   ACTIVATE SERVICE – INNER CARD
-================================ */
-.activate-inner-card {
-  margin: 18px 0 22px;
-  padding: 20px 18px;
-
-  border-radius: 22px;
-
-  background: rgba(255, 255, 255, 0.05);
-  border: 1.5px solid rgba(255, 215, 130, 0.45);
-
-  box-shadow:
-    inset 0 0 20px rgba(255, 200, 110, 0.18),
-    0 0 22px rgba(0, 0, 0, 0.45);
-}
-
-
-.activate-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(8, 8, 12, 0.85);
-  backdrop-filter: blur(8px);
-  z-index: 10000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.modal-label,
-.activate-modal label {
-  display: block;
-  margin: 14px 0 6px;
-
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.6px;
-
-  color: rgba(255, 215, 130, 0.85);
-  text-transform: uppercase;
-}
-
-
+/* Title */
 .activate-modal h3 {
-  margin-bottom: 18px;
   text-align: center;
+  margin-bottom: 18px;
 
   font-size: 22px;
   font-weight: 900;
   letter-spacing: 0.5px;
 
   color: #FFD27D;
-  text-shadow: 0 0 14px rgba(255, 210, 120, 0.6);
+  text-shadow: 0 0 14px rgba(255, 215, 130, 0.6);
 }
 
+/* Inner card */
+.activate-inner-card {
+  margin: 16px 0 22px;
+  padding: 18px;
+
+  border-radius: 22px;
+  background: rgba(255, 255, 255, 0.05);
+
+  border: 1.5px solid rgba(255, 215, 130, 0.4);
+  box-shadow: inset 0 0 18px rgba(255, 200, 110, 0.18);
+}
+
+/* Labels */
+.modal-label {
+  display: block;
+  margin-bottom: 6px;
+
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+
+  color: rgba(255, 215, 130, 0.85);
+}
+
+/* Price input */
 .activate-modal .price-input {
   width: 100%;
   padding: 12px 14px;
@@ -657,7 +430,6 @@
   font-size: 16px;
   font-weight: 700;
   text-align: center;
-
   outline: none;
 }
 
@@ -666,146 +438,67 @@
   box-shadow: 0 0 16px rgba(255, 215, 130, 0.6);
 }
 
-.activate-modal .option-list {
-  margin-top: 18px;
-  padding: 14px;
-
-  border-radius: 16px;
-  background: rgba(255, 255, 255, 0.05);
-
-  border: 1px dashed rgba(255, 215, 130, 0.35);
+/* Buttons */
+.activate-modal .btn-primary {
+  width: 100%;
+  margin-top: 10px;
 }
 
-.activate-modal .option-item {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  margin-bottom: 10px;
+.activate-modal .btn-secondary {
+  width: 100%;
+  margin-top: 12px;
 }
 
-.activate-modal .option-item:last-child {
-  margin-bottom: 0;
-}
-
-.modal-label {
-  font-size: 13px;
-  margin-bottom: 6px;
-  display: block;
-}
-
-.modal-actions {
-  display: flex;
-  gap: 12px;
-  margin-top: 20px;
-}
-
-.btn-secondary {
-  flex: 1;
-  padding: 12px;
-  border-radius: 30px;
-  background: transparent;
-  border: 1px solid rgba(255, 215, 130, 0.4);
-  color: #FFD27D;
-  cursor: pointer;
-}
-
-@keyframes modalFadeIn {
+/* Animation */
+@keyframes activateFadeIn {
   from {
     opacity: 0;
     transform: translateY(18px) scale(0.96);
   }
-
   to {
     opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
-
 /* ===============================
-   ACTIVE / INACTIVE TOGGLE
+   CANCEL BUTTON – PREMIUM
 ================================ */
 
-.status-toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
+.btn-secondary {
+  width: 100%;
+  margin-top: 12px;
+  padding: 12px 14px;
 
-.status-label {
+  border-radius: 26px;
+  border: 1.6px solid rgba(255, 215, 130, 0.45);
+
+  background: transparent;
+  color: #FFD27D;
+
   font-size: 15px;
-  font-weight: 600;
-  color: #ffd27d;
-}
-
-/* Toggle container */
-.status-toggle {
-  position: relative;
-  width: 140px;
-  height: 36px;
-  cursor: pointer;
-}
-
-.status-toggle input {
-  opacity: 0;
-}
-
-/* Track */
-.status-track {
-  position: absolute;
-  inset: 0;
-  border-radius: 999px;
-  background: rgba(255, 215, 130, 0.25);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 14px;
-  box-sizing: border-box;
-  transition: 0.3s ease;
-}
-
-/* Text */
-.status-text {
-  font-size: 12px;
-  font-weight: 700;
+  font-weight: 800;
   letter-spacing: 0.4px;
-  text-transform: uppercase;
-  z-index: 1;
-  transition: 0.3s ease;
+
+  cursor: pointer;
+  transition: all 0.25s ease;
+
+  box-shadow:
+    inset 0 0 12px rgba(255, 215, 130, 0.12);
 }
 
-.status-text.active {
-  color: #0a8f55;
+/* Hover */
+.btn-secondary:hover {
+  background: rgba(255, 215, 130, 0.14);
+  box-shadow:
+    0 0 18px rgba(255, 215, 130, 0.45),
+    inset 0 0 14px rgba(255, 215, 130, 0.25);
+
+  transform: translateY(-1px);
 }
 
-.status-text.inactive {
-  color: #c62828;
-}
-
-/* Thumb */
-.status-thumb {
-  position: absolute;
-  top: 4px;
-  left: 4px;
-  width: 64px;
-  height: 28px;
-  border-radius: 999px;
-  background: linear-gradient(135deg, #ffd27d, #e5b759);
-  box-shadow: 0 0 14px rgba(255, 215, 130, 0.6);
-  transition: 0.3s ease;
-}
-
-/* ACTIVE STATE */
-.status-toggle input:checked+.status-track .status-thumb {
-  transform: translateX(68px);
-}
-
-/* ACTIVE emphasis */
-.status-toggle input:checked+.status-track .status-text.active {
-  color: #0b0b0d;
-}
-
-.status-toggle input:not(:checked)+.status-track .status-text.inactive {
-  color: #0b0b0d;
+/* Active (press) */
+.btn-secondary:active {
+  transform: translateY(0);
+  box-shadow:
+    inset 0 0 18px rgba(255, 215, 130, 0.35);
 }

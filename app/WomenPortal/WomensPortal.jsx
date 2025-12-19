@@ -16,7 +16,7 @@ export default function WomensPortal({ onClose }) {
   const [currentView, setCurrentView] = useState("LEVEL1");
   const [selectedLevel1, setSelectedLevel1] = useState(null);
   const [selectedLevel2, setSelectedLevel2] = useState(null);
-  const [tab, setTab] = useState("Active");
+
 
   // Edit Modal
   const [showEditModal, setShowEditModal] = useState(false);
@@ -56,33 +56,38 @@ export default function WomensPortal({ onClose }) {
   };
 
   /* ================= TOGGLE STATUS ================= */
-  const toggleStatus = (service) => {
-    if (tab === "Inactive") {
-      setPendingService(service);
-      setActivationPrice(service.price || "");
-      setModalOptions(service.options || defaultOptions());
-      setShowActivateModal(true);
-      return;
-    }
+const toggleStatus = (service) => {
+  const isActive = (service.pricingStatus || "Active") === "Active";
 
-    if (!window.confirm("Make this service inactive?")) return;
+  // 👉 ACTIVE → INACTIVE
+  if (isActive) {
+    if (!window.confirm("Deactivate this service?")) return;
 
     service.pricingStatus = "Inactive";
     setWomenData([...womenData]);
-  };
+    return;
+  }
 
- const confirmActivateService = () => {
-  pendingService.price = Number(activationPrice);
-
-  // ✅ KEEP ALL OPTIONS
-  pendingService.options = modalOptions;
-
-  pendingService.pricingStatus = "Active";
-  setWomenData([...womenData]);
-
-  setShowActivateModal(false);
-  setPendingService(null);
+  // 👉 INACTIVE → ACTIVE (open activate modal)
+  setPendingService(service);
+  setActivationPrice(service.price || "");
+  setModalOptions(service.options || defaultOptions());
+  setShowActivateModal(true);
 };
+
+
+  const confirmActivateService = () => {
+    pendingService.price = Number(activationPrice);
+
+    // ✅ KEEP ALL OPTIONS
+    pendingService.options = modalOptions;
+
+    pendingService.pricingStatus = "Active";
+    setWomenData([...womenData]);
+
+    setShowActivateModal(false);
+    setPendingService(null);
+  };
 
 
   return (
@@ -90,38 +95,38 @@ export default function WomensPortal({ onClose }) {
       <div className="women-card">
 
         {/* HEADER */}
-       <div className="services-header">
-  <span
-    className="back-arrow"
-    onClick={() => {
-      if (currentView === "SERVICES") setCurrentView("LEVEL2");
-      else if (currentView === "LEVEL2") setCurrentView("LEVEL1");
-      else onClose();
-    }}
-  >
-    ←
-  </span>
+        <div className="services-header">
+          <span
+            className="back-arrow"
+            onClick={() => {
+              if (currentView === "SERVICES") setCurrentView("LEVEL2");
+              else if (currentView === "LEVEL2") setCurrentView("LEVEL1");
+              else onClose();
+            }}
+          >
+            ←
+          </span>
 
-  <div className="header-text">
-    <h2>
-      {currentView === "LEVEL1" && "Women's Styling"}
-      {currentView === "LEVEL2" && selectedLevel1?.name}
-      {currentView === "SERVICES" && selectedLevel2?.name}
-    </h2>
+          <div className="header-text">
+            <h2>
+              {currentView === "LEVEL1" && "Women's Styling"}
+              {currentView === "LEVEL2" && selectedLevel1?.name}
+              {currentView === "SERVICES" && selectedLevel2?.name}
+            </h2>
 
-    {/* ✅ RESTORED BREADCRUMB */}
-    <p className="section-path">
-      {currentView === "LEVEL1" && "You are viewing: Category"}
-      {currentView === "LEVEL2" &&
-        `You are viewing: Women's Styling > ${selectedLevel1?.name}`}
-      {currentView === "SERVICES" &&
-        `You are viewing: Women's Styling > ${selectedLevel1?.name} > ${selectedLevel2?.name}`}
-    </p>
-  </div>
-</div>
+            {/* ✅ RESTORED BREADCRUMB */}
+            <p className="section-path">
+              {currentView === "LEVEL1" && "You are viewing: Category"}
+              {currentView === "LEVEL2" &&
+                `You are viewing: Women's Styling > ${selectedLevel1?.name}`}
+              {currentView === "SERVICES" &&
+                `You are viewing: Women's Styling > ${selectedLevel1?.name} > ${selectedLevel2?.name}`}
+            </p>
+          </div>
+        </div>
 
 
-        
+
 
         {/* LEVEL 1 */}
         {currentView === "LEVEL1" &&
@@ -150,29 +155,47 @@ export default function WomensPortal({ onClose }) {
         {/* SERVICES */}
         {currentView === "SERVICES" && (
           <>
-            <div className="services-tabs">
-              <button className={tab === "Active" ? "tab active" : "tab"} onClick={() => setTab("Active")}>Active</button>
-              <button className={tab === "Inactive" ? "tab active" : "tab"} onClick={() => setTab("Inactive")}>Inactive</button>
-            </div>
+           
 
-            <div className="services-list">
-              {(selectedLevel2.children.length ? selectedLevel2.children : [selectedLevel2])
-                .filter(s => (s.pricingStatus || "Active") === tab)
-                .map(service => (
-                  <ServiceCard
-                    key={service.id}
-                    service={service}
-                    tab={tab}
-                    toggleStatus={toggleStatus}
-                    onEdit={() => {
-                      setEditingService(service);
-                      setModalPrice(service.price || "");
-                      setModalOptions(service.options || defaultOptions());
-                      setShowEditModal(true);
-                    }}
-                  />
-                ))}
-            </div>
+           <div className="services-list">
+
+  {/* ================= ACTIVE SERVICES ================= */}
+  {(selectedLevel2.children.length ? selectedLevel2.children : [selectedLevel2])
+    .filter(s => (s.pricingStatus || "Active") === "Active")
+    .map(service => (
+      <ServiceCard
+        key={service.id}
+        service={service}
+        isActive={true}
+        toggleStatus={toggleStatus}
+        onEdit={() => {
+          setEditingService(service);
+          setModalPrice(service.price || "");
+          setModalOptions(service.options || defaultOptions());
+          setShowEditModal(true);
+        }}
+      />
+    ))}
+
+  {/* ================= INACTIVE SECTION ================= */}
+  {(selectedLevel2.children.length ? selectedLevel2.children : [selectedLevel2])
+    .some(s => s.pricingStatus === "Inactive") && (
+      <div className="inactive-divider">Inactive Services</div>
+    )}
+
+  {(selectedLevel2.children.length ? selectedLevel2.children : [selectedLevel2])
+    .filter(s => s.pricingStatus === "Inactive")
+    .map(service => (
+      <ServiceCard
+        key={service.id}
+        service={service}
+        isActive={false}
+        toggleStatus={toggleStatus}
+      />
+    ))}
+
+</div>
+
           </>
         )}
       </div>
@@ -185,65 +208,68 @@ export default function WomensPortal({ onClose }) {
 
           <ServiceOptionsEditor options={modalOptions} setOptions={setModalOptions} />
 
-         <button
-  className="btn-primary"
-  onClick={() => {
-    editingService.price = Number(modalPrice);
+          <button
+            className="btn-primary"
+            onClick={() => {
+              editingService.price = Number(modalPrice);
 
-    // ✅ KEEP ALL OPTIONS
-    editingService.options = modalOptions;
+              // ✅ KEEP ALL OPTIONS
+              editingService.options = modalOptions;
 
-    setWomenData([...womenData]);
-    setShowEditModal(false);
-  }}
->
-  Save
-</button>
+              setWomenData([...womenData]);
+              setShowEditModal(false);
+            }}
+          >
+            Save
+          </button>
 
         </Modal>
       )}
 
       {/* ACTIVATE MODAL */}
-     {showActivateModal && pendingService && (
-  <Modal title="Activate Service" onClose={() => setShowActivateModal(false)}>
+      {showActivateModal && pendingService && (
+        <Modal title="Activate Service" onClose={() => setShowActivateModal(false)}>
 
-    {/* 🔲 INNER CARD */}
-    <div className="activate-inner-card">
+          {/* 🔲 INNER CARD */}
+          <div className="activate-inner-card">
 
-      <label className="modal-label">Price</label>
-      <input
-        className="price-input"
-        value={activationPrice}
-        onChange={e => setActivationPrice(e.target.value)}
-      />
+            <label className="modal-label">Price</label>
+            <input
+              className="price-input"
+              value={activationPrice}
+              onChange={e => setActivationPrice(e.target.value)}
+            />
 
-      <ServiceOptionsEditor
-        options={modalOptions}
-        setOptions={setModalOptions}
-      />
+            <ServiceOptionsEditor
+              options={modalOptions}
+              setOptions={setModalOptions}
+            />
 
-    </div>
+          </div>
 
-    <button
-      className="btn-primary"
-      onClick={confirmActivateService}
-    >
-      Activate
-    </button>
+          <button
+            className="btn-primary"
+            onClick={confirmActivateService}
+          >
+            Activate
+          </button>
 
-  </Modal>
-)}
+        </Modal>
+      )}
 
     </div>
   );
 }
 
 /* ================= CARD ================= */
-function ServiceCard({ service, tab, toggleStatus, onEdit }) {
-  const isActive = (service.pricingStatus || "Active") === "Active";
-
+function ServiceCard({ service, isActive, toggleStatus, onEdit }) {
   return (
-    <div className="service-card">
+    <div
+  className={`service-card ${
+    isActive ? "active-card" : "inactive-card"
+  }`}
+>
+
       <div className="service-top">
         <img src={service.imageUrl} alt={service.name} />
         <h4>{service.name}</h4>
@@ -265,22 +291,23 @@ function ServiceCard({ service, tab, toggleStatus, onEdit }) {
         </div>
       )}
 
-      {/* ACTION AREA */}
-      <div className="service-bottom">
-  <div className="status-toggle-row">
-    <span className="status-label">Service Status</span>
+      {/* ACTION */}
+      {/* ACTION */}
+<div className="service-bottom">
+  <div className="status-toggle-wrapper">
+  
 
-    <label className="status-toggle">
+    <label className="big-toggle">
       <input
         type="checkbox"
-        checked={(service.pricingStatus || "Active") === "Active"}
+        checked={isActive}
         onChange={() => toggleStatus(service)}
       />
 
-      <span className="status-track">
-        <span className="status-text inactive">Inactive</span>
-        <span className="status-text active">Active</span>
-        <span className="status-thumb"></span>
+      <span className="big-toggle-track">
+        <span className="big-toggle-text inactive">off</span>
+        <span className="big-toggle-text active">on</span>
+        <span className="big-toggle-thumb"></span>
       </span>
     </label>
   </div>
@@ -289,6 +316,7 @@ function ServiceCard({ service, tab, toggleStatus, onEdit }) {
     </div>
   );
 }
+
 
 
 /* ================= OPTIONS EDITOR ================= */
